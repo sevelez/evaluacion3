@@ -31,7 +31,7 @@ def menu_principal():
         '1': ('Consultar Asistencia Actual  por  alumno', consulta_asistencia_rut),
         '2': ('Visualizar alumnos Asistencia Actual < 70%.', visualiza_asistencia_70),
         '3': ('Visualizar número alumnos con “Asistencia Actual”  < 70%  de un curso', visualiza_asistencia_curso),
-        '4': ('Generar archivo alumnos con “Asistencia Actual”  < 70%  de un curso', consulta_asistencia_rut),
+        '4': ('Generar archivo alumnos con “Asistencia Actual”  < 70%  de un curso', generar_asistencia_curso),
         '5': ('Salir', salir)
     }
 
@@ -92,6 +92,26 @@ def visualiza_asistencia_curso():
     print(f"{curso_ingreso} alumnos con asistencia menor al 70%: {contador_alumnos}")       
     input()
 
+
+
+    
+
+def generar_asistencia_curso():
+
+    curso_ingreso=input('Ingresa el curso a revisar: ')
+    lista_alumnos = obtener_fichero_asistencia()
+    with open('salida.csv','w', newline='') as archivo: #Genera un archivo de salida y de nombre le pone salida 
+        escritor_csv=csv.writer(archivo,delimiter=';') # Importante tener en cuenta el delimitador 
+        escritor_csv.writerow(['Curso','Nombre', 'Asistencia'])
+        for alumnos in lista_alumnos:
+            if alumnos['Asistencia_actual'] < 70 and curso_ingreso == alumnos['curso']: #Si los alumnos tienen asistencia bajo de 70 y que el curso ingresado sea igual a curso existente
+                lista=[]
+                lista.append(alumnos['curso'])
+                lista.append(alumnos['nombre'])
+                lista.append(alumnos['Asistencia_actual'])
+                escritor_csv.writerow(lista)
+                
+       
 
 def salir():
     print('Saliendo')
